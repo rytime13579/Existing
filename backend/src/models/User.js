@@ -21,7 +21,7 @@ const userSchema = new mongoose.Schema({
         default: ""
     },
 }, {timestamps: true}) //createdAt & updatedAt
-
+// "User here defines the json file in which the above will be stored in the database"
 const User = mongoose.model("User", userSchema);
 
 export default User;
