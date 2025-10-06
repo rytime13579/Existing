@@ -89,3 +89,43 @@ export const signup = async (req,res) => {
     }
     
 };
+
+
+//login enpoint for the api
+export const login = async (req, res) => {
+
+    // get email and password user typed from the body of the post request
+    const {email, password} = req.body;
+    // trys to find the email 
+    try {
+        // find user in database
+        const user = await User.findOne({email:email});
+        // if email doe not exist, then we send "invalid credentials"
+        // never tell the client which one is incorrect: password  or email
+        if (!user) return res.status(400).json({message:"Invalid Credentials"});
+        // use bcrypt to compare the plain text password to the salted/encrypted password
+        const isPasswordCorrect = await bcrypt.compare(password, user.password);
+        // return invalid credentials if password is incorrect 
+        if (!isPasswordCorrect) return res.status(400).json({message:"Invalid Credentials"});
+        // generate token using user._id and res field to respond with token
+        generateToken(user._id, res);
+        // sends user information back to client 
+        res.status(200).json({
+            _id: user._id,
+            fullName: user.fullName,
+            email: user.email,
+            profilePic: user.profilePic,
+    });
+    } catch (error) {
+        console.error("Error in login controller: ", error);
+        res.status(500).json({message: "Internal server error" });
+    }  
+
+};
+// we don't need req here
+export const logout = (_, res) => {
+    // get the name of the cookie from utils.js (in our case jwt)
+    // then kill the cookie by setting its max age to 0
+    res.cookie("jwt", "", {maxAge: 0});
+    res.status(200).json({message: "Logged out successfully"});
+};
