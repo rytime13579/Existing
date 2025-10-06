@@ -10,6 +10,8 @@ import {sendWelcomeEmail} from "../emails/emailHandler.js";
 
 import {ENV} from '../lib/env.js';
 
+
+//singup enpoint for api
 export const signup = async (req,res) => {
 
     const {fullName, email, password} = req.body;
@@ -89,8 +91,6 @@ export const signup = async (req,res) => {
     }
     
 };
-
-
 //login enpoint for the api
 export const login = async (req, res) => {
 
@@ -134,3 +134,26 @@ export const logout = (_, res) => {
     res.cookie("jwt", "", {maxAge: 0});
     res.status(200).json({message: "Logged out successfully"});
 };
+// allows user to update their image
+// we will store images locally
+// TODO: Add logic to save profile picture to local machine
+export const updateProfile = async (req, res) => {
+    try {   
+        const { profilePic } = req.body;
+        if (!profilePic) return res.status(400).json({message: "Profile picture is required"});
+        // here we access our custome field from the auth middleware function
+        const userId = req.user._id;
+        
+        // TODO: upload or store image here
+        // imgUrl must be defined properly
+        const imgUrl = "";
+
+        const updatedUser = await User.findByIdAndUpdate(userId, {profilePic:imgUrl}, {new:true});
+
+        res.status(200).json(updatedUser);
+
+    } catch (error) {
+        console.error("Error in update profile controller: ", error);
+        res.status(500).json({message: "Internal server error" });
+    }
+}
