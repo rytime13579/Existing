@@ -97,6 +97,11 @@ export const login = async (req, res) => {
     // get email and password user typed from the body of the post request
     const {email, password} = req.body;
     // trys to find the email 
+
+    if (!email || !password) {
+        return res.status(400).json(({message: "Email and password are required"}));
+    }
+
     try {
         // find user in database
         const user = await User.findOne({email:email});
