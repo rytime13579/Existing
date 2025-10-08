@@ -10,6 +10,7 @@ import {sendWelcomeEmail} from "../emails/emailHandler.js";
 
 import {ENV} from '../lib/env.js';
 
+import cloudinary from "../lib/cloudinary.js";
 
 //singup enpoint for api
 export const signup = async (req,res) => {
@@ -146,9 +147,14 @@ export const updateProfile = async (req, res) => {
         
         // TODO: upload or store image here
         // imgUrl must be defined properly
-        const imgUrl = "";
+        // currently we are using cloudinary which allows for 25 updated images / month, we will probably need to scale this locally soon
+        const imgUrl = await cloudinary.uploader.upload(profilePic);
 
-        const updatedUser = await User.findByIdAndUpdate(userId, {profilePic:imgUrl}, {new:true});
+        const updatedUser = await User.findByIdAndUpdate(
+            userId, 
+            {profilePic:imgUrl.secure_url}, 
+            {new:true}).
+            select("-password");
 
         res.status(200).json(updatedUser);
 

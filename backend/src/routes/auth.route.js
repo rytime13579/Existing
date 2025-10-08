@@ -4,7 +4,11 @@ import {signup, login, logout, updateProfile} from "../controllers/auth.controll
 
 import {protectRoute} from "../middleware/auth.middleware.js";
 
+import { arcjetProtection } from '../middleware/arcjet.middleware.js';
+
 const router = express.Router();
+
+router.use(arcjetProtection);
 
 router.post("/signup", signup);
 router.post("/login", login);

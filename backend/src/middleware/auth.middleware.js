@@ -1,7 +1,7 @@
 import jwt from "jsonwebtoken";
 import User from "../models/User.js";
 import {ENV} from "../lib/env.js";
-
+// this method ensures that the user is logged in and has a valid token before doing proceeding
 export const protectRoute = async (req, res, next) => {
     try {
         // get token from cookies labeled "jwt" which is the name of our token
