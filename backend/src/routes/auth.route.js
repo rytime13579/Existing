@@ -6,9 +6,13 @@ import {protectRoute} from "../middleware/auth.middleware.js";
 
 import { arcjetProtection } from '../middleware/arcjet.middleware.js';
 
+import { ENV } from "../lib/env.js";
+
 const router = express.Router();
 
-router.use(arcjetProtection);
+if (ENV.NODE_ENV !== "development") {
+    router.use(arcjetProtection);
+}
 
 router.post("/signup", signup);
 router.post("/login", login);
