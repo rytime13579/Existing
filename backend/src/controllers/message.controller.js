@@ -57,6 +57,19 @@ export const sendMessage = async(req, res) => {
         const {id: receiverId} = req.params; // get receiverId from params (who we are sending to)
         const senderId = req.user._id; // get senderId from user._id (or from the protectroute middleware) 
         
+        // edge case handling
+        if (!text && !image) {
+            return res.status(400).json({ message: "Text or image is required." });
+        }
+        if (senderId.equals(receiverId)) {
+            return res.status(400).json({ message: "Cannot send messages to yourself." });
+        }
+            const receiverExists = await User.exists({ _id: receiverId });
+        if (!receiverExists) {
+                return res.status(404).json({ message: "Receiver not found." });
+        }
+
+
         let imageUrl;
         // get image from body and parse url from cloudinary
         if(image) {
@@ -77,7 +90,7 @@ export const sendMessage = async(req, res) => {
         // save message to databse
         await newMessage.save();
 
-        // todo: send message in real-time if user is online - ssocket.io
+        // todo: send message in real-time if user is online - socket.io
 
         // respond with sent messagegetChatPartners
         res.status(200).json(newMessage);
