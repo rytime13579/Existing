@@ -7,11 +7,8 @@ import {useAuthStore} from './store/useAuthStore';
 
 function App() {
 
+  // TODO : make sure that this is still needed
   const {authUser, isLoggedIn, login} = useAuthStore();
-
-  console.log(authUser);
-  console.log(isLoggedIn);
-  console.log(login);
 
   return (
     <div className="min-h-screen bg-slate-900 flex items-center justify-center p-4 overflow-hidden">
@@ -20,7 +17,6 @@ function App() {
       <div className="absolute top-0 -left-4 size-96 bg-pink-500 opacity-20 blur-[100px]" />
       <div className="absolute bottom-0 -right-4 size-96 bg-cyan-500 opacity-20 blur-[100px]" />
 
-      <button onClick={login} className="z-10">Login</button>
 
       <Routes>
         <Route path="/" element = {<ChatPage/>}/>
