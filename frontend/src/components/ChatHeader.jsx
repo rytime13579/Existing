@@ -27,8 +27,8 @@ border-slate-700/50 max-h-[84px] px-6 flex-1"
     <div className="flex items-center space-x-3">
         {/*<div className={`avatar ${isOnline ? "online" : "offline"}`}>*/}
         <div className="offline">
-        <div className="w-12 rounded-full">
-            <img src={selectedUser.profilePic || "/avatar.png"} alt={selectedUser.fullName} />
+        <div className="h-12 w-12 rounded-full overflow-hidden">
+            <img src={selectedUser.profilePic || "/avatar.png"} alt={selectedUser.fullName} className="w-full h-full object-cover"/>
         </div>
         </div>
 

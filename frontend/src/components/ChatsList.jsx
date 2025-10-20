@@ -26,8 +26,8 @@ return (
         <div className="flex items-center gap-3">
             {/*<div className={`avatar ${onlineUsers.includes(contact._id) ? "online" : "offline"}`}>*/}
             <div className="offline">
-            <div className="size-12 rounded-full">
-                <img src={chat.profilePic || "/avatar.png"} alt={chat.fullName} />
+            <div className="w-12 h-12 rounded-full overflow-hidden">
+                <img src={chat.profilePic || "/avatar.png"} alt={chat.fullName} className="w-full h-full object-cover" />
             </div>
             </div>
             <h4 className="text-slate-200 font-medium truncate">{chat.fullName}</h4>
