@@ -19,7 +19,8 @@ export const useChatStore = create((set) => ({
         try {
             // get all contacts from the back end using an api rquests
             const res = await axiosInstance.get("/messages/contacts");
-            set ({ allContatcs: res.data});
+            console.log(res.data);
+            set ({ allContacts: res.data});
         } catch (error) {
             toast.error(error.response.data.message);
             console.log("Error in get all contacts", error);
@@ -40,6 +41,18 @@ export const useChatStore = create((set) => ({
         } finally {
             set ({ isUsersLoading: false});
         }
+    },
+    getMessagesByUserId: async (userId) => {
+        set({ isMessagesLoading: true });
+    try {
+        const res = await axiosInstance.get(`/messages/${userId}`);
+        set({ messages: res.data });
+    } catch (error) {
+        toast.error(error.response?.data?.message || "Something went wrong");
+    } finally {
+        set({ isMessagesLoading: false });
     }
+    },
+    
 
 }));

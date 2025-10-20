@@ -1,25 +1,47 @@
 import { useState, useRef } from "react";
-import { LogOutIcon, VolumeOffIcon, Volume2Icon } from "lucide-react";
+import { LogOutIcon, VolumeOffIcon, Volume2Icon, LoaderIcon } from "lucide-react";
 import { useAuthStore } from "../store/useAuthStore";
+import { downscaleImage } from '../util/downscaleImage';
+import toast from 'react-hot-toast';
 
 function ProfileHeader() {
-    const { logout, authUser, updateProfile } = useAuthStore();
+    const { logout, authUser, updateProfile, isUploadingImage } = useAuthStore();
     const [selectedImg, setSelectedImg] = useState(null);
 
-    const fileInputRef = useRef(null);
+    const fileInputRef = useRef(null); // get file input for profile picture
 
-    const handleImageUpload = (e) => {
+
+    const blobToDataURL = (blob) =>
+    new Promise((res, rej) => {
+        const r = new FileReader();
+        r.onload = () => res(r.result);
+        r.onerror = rej;
+        r.readAsDataURL(blob);
+    });
+
+
+    const handleImageUpload = async (e) => { // handle uploading the image
         const file = e.target.files[0];
         if (!file) return;
+        // code was changed here to allow for image downscaling
+        try {
+            const small = await downscaleImage(file, 512, 512, "image/webp", 0.82);
+            const base64 = await blobToDataURL(small);
+            setSelectedImg(base64);
+            await updateProfile({ profilePic: base64 });
+        } catch (error) {
+            console.log("Image processing failed: " , error);
+            toast.error("Could not process image. Try a smaller file");
+        }
 
-        const reader = new FileReader();
-        reader.readAsDataURL(file);
+        // const reader = new FileReader();
+        // reader.readAsDataURL(file);
 
-        reader.onloadend = async () => {
-        const base64Image = reader.result;
-        setSelectedImg(base64Image);
-        await updateProfile({ profilePic: base64Image });
-        };
+        // reader.onloadend = async () => {
+        //     const base64Image = reader.result;
+        //     setSelectedImg(base64Image);
+        //     await updateProfile({ profilePic: base64Image });
+        // };
     };
 
     return (
@@ -32,11 +54,18 @@ function ProfileHeader() {
                 className="size-14 rounded-full overflow-hidden relative group"
                 onClick={() => fileInputRef.current.click()}
                 >
-                <img
+                {isUploadingImage ? (
+                    <LoaderIcon className="mx-auto h-5 w-5 animate-spin" />
+                ) : (
+                    <img
                     src={selectedImg || authUser.profilePic || "/avatar.png"}
                     alt="User image"
                     className="size-full object-cover"
                 />
+                )
+
+                }
+                
                 <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity">
                     <span className="text-white text-xs">Change</span>
                 </div>
