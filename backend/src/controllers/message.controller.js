@@ -1,5 +1,6 @@
 import Message from"../models/Message.js";
 import User from "../models/User.js";
+import cloudinary from "../lib/cloudinary.js";
 
 // get all contacts in the database except the users profile
 
