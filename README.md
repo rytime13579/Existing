@@ -69,7 +69,7 @@ RealTime-Chat-App/
 
 ### 1. Clone repository
 ```bash
-git clone https://github.com/rytime13579/real-time-chat-app.git
+git clone https://github.com/rytime13579/Existing.git
 cd real-time-chat-app
 ```
 
