@@ -13,10 +13,5 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "type": "commonjs",
-  "dependencies": {
-    "@arcjet/inspect": "^1.0.0-beta.13",
-    "@arcjet/node": "^1.0.0-beta.13",
-    "cloudinary": "^2.7.0"
-  }
+  "type": "commonjs"
 }

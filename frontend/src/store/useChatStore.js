@@ -83,7 +83,7 @@ export const useChatStore = create((set, get) => ({
             toast.error(error.response?.data?.message || "Something went wrong");
         }
     },
-
+    // get messages in real time
     subscribeToMessages : () => {
         const {selectedUser} = get();
         if (!selectedUser) return;
@@ -95,7 +95,7 @@ export const useChatStore = create((set, get) => ({
             set({messages: [...currentMessages, newMessage]});
         })
     },
-
+    // stop getting messages in real time
     unsubscribeFromMessages: () => {
         const socket = useAuthStore.getState().socket;
         socket.off("newMessage");
