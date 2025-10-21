@@ -20,6 +20,11 @@ const io = new Server(server, {
 
 io.use(socketAuthMiddleware);
 
+// check if use is online or not
+export function getReceiverSocketId(userId) {
+    return userSocketMap[userId];
+}
+
 
 const userSocketMap = {}; // {userId:socketId}
 
