@@ -2,12 +2,11 @@
 
 A full-stack messaging application where users can send and receive text and images securely. Built with the MERN stack and a clean, modern architecture for scalability and efficiency.
 
-> ⚠️ **Note:** Real-time messaging (Socket.io) is planned and will be implemented soon. Current version supports messaging features but does not yet include sockets.
-
 ---
 
 ## ✅ Features
 
+- Real time messaging with socket.io
 - Secure authentication with **JWT & HTTP-only cookies**
 - **Send and receive messages** with images
 - **Cloudinary image upload support**
@@ -147,11 +146,11 @@ Visit frontend at: **http://localhost:5173**
 
 ## ✅ Roadmap
 
-- [ ] Real-time chat with **Socket.io**
-- [ ] Online users status
 - [ ] Message read receipts
 - [ ] More UI themes
 - [ ] Emoji/message reactions
+- [ ] Contact search capability
+- [ ] New color scheme
 
 ---
 
