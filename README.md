@@ -151,6 +151,8 @@ Visit frontend at: **http://localhost:5173**
 - [ ] Emoji/message reactions
 - [ ] Contact search capability
 - [ ] New color scheme
+- [ ] Groupchat functionality
+- [ ] Self hosted mongoDb & Image server
 
 ---
 
