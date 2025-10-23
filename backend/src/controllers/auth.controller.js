@@ -12,6 +12,9 @@ import {ENV} from '../lib/env.js';
 
 import cloudinary from "../lib/cloudinary.js";
 
+import path from 'path';
+import fs from 'fs';
+
 //singup enpoint for api
 export const signup = async (req,res) => {
 
@@ -137,7 +140,7 @@ export const logout = (_, res) => {
 };
 // allows user to update their image
 // we will store images locally
-// TODO: Add logic to save profile picture to local machine
+
 export const updateProfile = async (req, res) => {
     try {   
         const { profilePic } = req.body;
@@ -148,11 +151,27 @@ export const updateProfile = async (req, res) => {
         // TODO: upload or store image here
         // imgUrl must be defined properly
         // currently we are using cloudinary which allows for 25 updated images / month, we will probably need to scale this locally soon
-        const imgUrl = await cloudinary.uploader.upload(profilePic);
+        // const imgUrl = await cloudinary.uploader.upload(profilePic);
+
+        // ----------------storing image to local folder ------------
+
+        const matches = profilePic.match(/^data:(.+);base64,(.+)$/);
+        if (!matches) return res.status(400).json({ message: "Invalid image format" });
+
+        const mimeType = matches[1];
+        const base64Data = matches[2];
+        const extension = mimeType.split('/')[1];
+
+        const fileName = `${userId}_${Date.now()}.${extension}`;
+        const filePath = path.join('uploads/profilePics', fileName);
+
+        fs.writeFileSync(filePath, Buffer.from(base64Data, "base64"));
+
+        const imgUrl = `/uploads/profilePics/${fileName}`;
 
         const updatedUser = await User.findByIdAndUpdate(
             userId, 
-            {profilePic:imgUrl.secure_url}, 
+            {profilePic:imgUrl}, 
             {new:true}).
             select("-password");
 

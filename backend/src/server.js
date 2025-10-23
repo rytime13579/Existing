@@ -27,14 +27,14 @@ app.use(cookieParser());
 app.use("/api/auth/", authRoutes,);
 app.use("/api/messages/", messageRoutes,);
 
-// make ready for deployment
 
-console.log(ENV.NODE_ENV);
+// make ready for deployment
 
 if (ENV.NODE_ENV === "production") {
     app.use(express.static(path.join(__dirname, "../frontend/dist")));
-    
-    console.log("I DID SOMETING");
+
+    app.use('/uploads', express.static(path.join(__dirname, '/uploads')));
+
 
     app.get("*", (_, res) => {
         res.sendFile(path.join(__dirname, "../frontend/dist/index.html"))

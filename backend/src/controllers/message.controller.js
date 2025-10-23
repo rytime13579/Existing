@@ -2,6 +2,8 @@ import Message from"../models/Message.js";
 import User from "../models/User.js";
 import cloudinary from "../lib/cloudinary.js";
 import { getReceiverSocketId, io} from "../lib/socket.js";
+import path from 'path';
+import fs from 'fs';
 
 // get all contacts in the database except the users profile
 
@@ -77,10 +79,28 @@ export const sendMessage = async(req, res) => {
         if(image) {
 
             // upload it to cloudinary
-            // TODO: release yourself from this dog shit api
-            const uploadResponse = await cloudinary.uploader.upload(image);
-            imageUrl = uploadResponse.secure_url;
+            
+            //const uploadResponse = await cloudinary.uploader.upload(image);
+            //imageUrl = uploadResponse.secure_url;
+
+            const matches = image.match(/^data:(.+);base64,(.+)$/);
+            if (!matches) return res.status(400).json({ message: "Invalid image format" });
+
+            const mimeType = matches[1];
+            const base64Data = matches[2];
+            const extension = mimeType.split('/')[1];
+
+            const fileName = `${senderId}_${Date.now()}.${extension}`;
+            const filePath = path.join('uploads/messageUploads', fileName);
+
+            fs.writeFileSync(filePath, Buffer.from(base64Data, "base64"));
+
+            imageUrl = `/uploads/messageUploads/${fileName}`;
+
+            
+
         }
+        console.log(imageUrl);
         // create new Message object from the information we have spliced
         const newMessage = new Message({
             senderId,

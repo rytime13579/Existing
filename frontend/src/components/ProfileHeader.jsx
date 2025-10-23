@@ -11,24 +11,14 @@ function ProfileHeader() {
     const fileInputRef = useRef(null); // get file input for profile picture
 
 
-    const blobToDataURL = (blob) =>
-    new Promise((res, rej) => {
-        const r = new FileReader();
-        r.onload = () => res(r.result);
-        r.onerror = rej;
-        r.readAsDataURL(blob);
-    });
-
-
     const handleImageUpload = async (e) => { // handle uploading the image
         const file = e.target.files[0];
         if (!file) return;
         // code was changed here to allow for image downscaling
         try {
             const small = await downscaleImage(file, 512, 512, "image/webp", 0.82);
-            const base64 = await blobToDataURL(small);
-            setSelectedImg(base64);
-            await updateProfile({ profilePic: base64 });
+            setSelectedImg(small);
+            await updateProfile({ profilePic: small });
         } catch (error) {
             console.log("Image processing failed: " , error);
             toast.error("Could not process image. Try a smaller file");
