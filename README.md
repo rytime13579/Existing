@@ -9,7 +9,6 @@ A full-stack messaging application where users can send and receive text and ima
 - Real time messaging with socket.io
 - Secure authentication with **JWT & HTTP-only cookies**
 - **Send and receive messages** with images
-- **Cloudinary image upload support**
 - **User profiles** with avatar support
 - Modern **React + TailwindCSS UI**
 - **Zustand** for state management
@@ -31,7 +30,7 @@ A full-stack messaging application where users can send and receive text and ima
 | Database           | MongoDB, Mongoose                              |
 | Authentication     | JSON Web Token (JWT), bcrypt                   |
 | Styling            | TailwindCSS                                    |
-| File Upload        | Cloudinary                                     |
+| File Upload        | Locally Hosted                                 |
 | Notifications      | react-hot-toast                                |
 | Icons              | lucide-react                                   |
 | Coming Soon        | Socket.io (real-time support)                  |
@@ -152,7 +151,7 @@ Visit frontend at: **http://localhost:5173**
 - [ ] Contact search capability
 - [ ] New color scheme
 - [ ] Groupchat functionality
-- [ ] Self hosted mongoDb & Image server
+- [ ] Self hosted mongoDb
 
 ---
 
